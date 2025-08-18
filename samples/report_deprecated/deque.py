@@ -1,170 +1,161 @@
-### Basics (params / returns / vars)
+from samples.sample_wrapper import SampleWrapper
 
 
-deque_param = """
-from typing import Deque
-def f(d: Deque[int]) -> None: ...
-"""
-
-deque_return = """
-from typing import Deque
-def g() -> Deque[str]: ...
-"""
-
-deque_var = """
-from typing import Deque
-dq: Deque[bytes] = Deque()
-"""
-
-
-### Qualified / aliased imports
-
-
-qualified_deque = """
-import typing
-def f(d: typing.Deque[int]) -> None: ...
-"""
-
-aliased_deque = """
-import typing as t
-def f(d: t.Deque[int]) -> None: ...
-"""
-
-imported_as_DQ = """
-from typing import Deque as DQ
-def f(d: DQ[int]) -> None: ...
-"""
-
-
-### Nested / mixed generics
-
-
-deque_of_unions = """
-from typing import Deque, Union
-d: Deque[Union[int, str]] = Deque()
-"""
-
-deque_of_optionals = """
-from typing import Deque, Optional
-d: Deque[Optional[int]] = Deque()
-"""
-
-dict_with_deque_value = """
-from typing import Dict, Deque
-D: Dict[str, Deque[int]] = {}
-"""
-
-
-### Callable / Tuple / Set interactions
-
-
-callable_with_deque = """
-from typing import Callable, Deque
-F: Callable[[Deque[int]], None]
-"""
-
-tuple_with_deque = """
-from typing import Tuple, Deque
-T: Tuple[Deque[int], Deque[str]]
-"""
-
-set_of_deques = """
-from typing import Set, Deque
-S: Set[Deque[int]]
-"""
-
-
-### Class attributes / dataclass
-
-
-class_attr_deque = """
-from typing import Deque
+samples = [
+    SampleWrapper(
+        sample_name="deque_param",
+        sample_code="""from typing import Deque
+def f(d: Deque[int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="deque_return",
+        sample_code="""from typing import Deque
+def g() -> Deque[str]: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="deque_var",
+        sample_code="""from typing import Deque
+dq: Deque[bytes] = Deque()""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="qualified_deque",
+        sample_code="""import typing
+def f(d: typing.Deque[int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="aliased_deque",
+        sample_code="""import typing as t
+def f(d: t.Deque[int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="imported_as_DQ",
+        sample_code="""from typing import Deque as DQ
+def f(d: DQ[int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="deque_of_unions",
+        sample_code="""from typing import Deque, Union
+d: Deque[Union[int, str]] = Deque()""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="deque_of_optionals",
+        sample_code="""from typing import Deque, Optional
+d: Deque[Optional[int]] = Deque()""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="dict_with_deque_value",
+        sample_code="""from typing import Dict, Deque
+D: Dict[str, Deque[int]] = {}""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="callable_with_deque",
+        sample_code="""from typing import Callable, Deque
+F: Callable[[Deque[int]], None]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="tuple_with_deque",
+        sample_code="""from typing import Tuple, Deque
+T: Tuple[Deque[int], Deque[str]]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="set_of_deques",
+        sample_code="""from typing import Set, Deque
+S: Set[Deque[int]]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="class_attr_deque",
+        sample_code="""from typing import Deque
 class C:
-    buffer: Deque[int]
-"""
-
-dataclass_deque = """
-from dataclasses import dataclass
+    buffer: Deque[int]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="dataclass_deque",
+        sample_code="""from dataclasses import dataclass
 from typing import Deque
 @dataclass
 class C:
-    buffer: Deque[str]
-"""
-
-
-### Overloads / Protocol
-
-
-overload_deque = """
-from typing import overload, Deque
+    buffer: Deque[str]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="overload_deque",
+        sample_code="""from typing import overload, Deque
 @overload
 def f(d: Deque[int]) -> int: ...
 @overload
 def f(d: Deque[str]) -> str: ...
-def f(d): ...
-"""
-
-protocol_deque = """
-from typing import Protocol, Deque
+def f(d): ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="protocol_deque",
+        sample_code="""from typing import Protocol, Deque
 class P(Protocol):
-    def f(self, d: Deque[int]) -> None: ...
-"""
-
-
-### Type alias / forward ref / future annotations
-
-
-pep695_alias_deque = """
+    def f(self, d: Deque[int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="pep695_alias_deque",
+        sample_code="""from typing import Deque
+type IntDeque = Deque[int]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="forward_ref_deque",
+        sample_code="""from typing import Deque
+def f(d: "Deque[int]") -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="future_annotations_deque",
+        sample_code="""from __future__ import annotations
 from typing import Deque
-type IntDeque = Deque[int]
-"""
-
-forward_ref_deque = """
-from typing import Deque
-def f(d: "Deque[int]") -> None: ...
-"""
-
-future_annotations_deque = """
-from __future__ import annotations
-from typing import Deque
-def f(d: Deque[int]) -> None: ...
-"""
-
-
-### Multiline / comments
-
-
-multiline_deque = """
-from typing import Deque
+def f(d: Deque[int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="multiline_deque",
+        sample_code="""from typing import Deque
 def f(d: Deque[
     int
-]) -> None: ...
-"""
-
-inline_comment_deque = """
-from typing import Deque
-dq: Deque[int]  # int buffer
-"""
-
-
-### Already new-style (should be unchanged)
-
-
-already_pep585_deque = """
-from collections import deque
-def f(d: deque[int]) -> None: ...
-"""
-
-
-### Edge-ish
-
-
-bare_Deque = """
-from typing import Deque
-dq: Deque  # no parameters (deprecated)
-"""
-
-deque_of_any = """
-from typing import Deque, Any
-dq: Deque[Any]
-"""
+]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="inline_comment_deque",
+        sample_code="""from typing import Deque
+dq: Deque[int]  # int buffer""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="already_pep585_deque",
+        sample_code="""from collections import deque
+def f(d: deque[int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="bare_Deque",
+        sample_code="""from typing import Deque
+dq: Deque  # no parameters (deprecated)""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="deque_of_any",
+        sample_code="""from typing import Deque, Any
+dq: Deque[Any]""",
+        errors=["reportDeprecated"],
+    ),
+]

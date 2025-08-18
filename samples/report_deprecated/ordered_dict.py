@@ -1,171 +1,162 @@
-### Basics (params / returns / vars)
+from samples.sample_wrapper import SampleWrapper
 
 
-ordereddict_param = """
-from typing import OrderedDict
-def f(d: OrderedDict[str, int]) -> None: ...
-"""
-
-ordereddict_return = """
-from typing import OrderedDict
-def g() -> OrderedDict[int, str]: ...
-"""
-
-ordereddict_var = """
-from typing import OrderedDict
-d: OrderedDict[str, int] = OrderedDict()
-"""
-
-
-### Qualified / aliased imports
-
-
-qualified_ordereddict = """
-import typing
-def f(d: typing.OrderedDict[str, int]) -> None: ...
-"""
-
-aliased_ordereddict = """
-import typing as t
-def f(d: t.OrderedDict[str, int]) -> None: ...
-"""
-
-imported_as_OD = """
-from typing import OrderedDict as OD
-def f(d: OD[str, int]) -> None: ...
-"""
-
-
-### Nested / mixed generics
-
-
-ordereddict_of_lists = """
-from typing import OrderedDict, List
-d: OrderedDict[str, List[int]] = OrderedDict()
-"""
-
-ordereddict_of_unions = """
-from typing import OrderedDict, Union
-d: OrderedDict[str, Union[int, float]] = OrderedDict()
-"""
-
-nested_ordereddicts = """
-from typing import OrderedDict
-nested: OrderedDict[str, OrderedDict[int, str]] = OrderedDict()
-"""
-
-
-### Callable / Tuple / Set interactions
-
-
-callable_with_ordereddict = """
-from typing import Callable, OrderedDict
-F: Callable[[OrderedDict[str, int]], None]
-"""
-
-tuple_with_ordereddict = """
-from typing import Tuple, OrderedDict
-T: Tuple[OrderedDict[str, int], OrderedDict[int, str]]
-"""
-
-set_of_ordereddicts = """
-from typing import Set, OrderedDict
-S: Set[OrderedDict[str, int]]
-"""
-
-
-### Class attributes / dataclass
-
-
-class_attr_ordereddict = """
-from typing import OrderedDict
+samples = [
+    SampleWrapper(
+        sample_name="ordereddict_param",
+        sample_code="""from typing import OrderedDict
+def f(d: OrderedDict[str, int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="ordereddict_return",
+        sample_code="""from typing import OrderedDict
+def g() -> OrderedDict[int, str]: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="ordereddict_var",
+        sample_code="""from typing import OrderedDict
+d: OrderedDict[str, int] = OrderedDict()""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="qualified_ordereddict",
+        sample_code="""import typing
+def f(d: typing.OrderedDict[str, int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="aliased_ordereddict",
+        sample_code="""import typing as t
+def f(d: t.OrderedDict[str, int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="imported_as_OD",
+        sample_code="""from typing import OrderedDict as OD
+def f(d: OD[str, int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="ordereddict_of_lists",
+        sample_code="""from typing import OrderedDict, List
+d: OrderedDict[str, List[int]] = OrderedDict()""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="ordereddict_of_unions",
+        sample_code="""from typing import OrderedDict, Union
+d: OrderedDict[str, Union[int, float]] = OrderedDict()""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="nested_ordereddicts",
+        sample_code="""from typing import OrderedDict
+nested: OrderedDict[str, OrderedDict[int, str]] = OrderedDict()""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="callable_with_ordereddict",
+        sample_code="""from typing import Callable, OrderedDict
+F: Callable[[OrderedDict[str, int]], None]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="tuple_with_ordereddict",
+        sample_code="""from typing import Tuple, OrderedDict
+T: Tuple[OrderedDict[str, int], OrderedDict[int, str]]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="set_of_ordereddicts",
+        sample_code="""from typing import Set, OrderedDict
+S: Set[OrderedDict[str, int]]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="class_attr_ordereddict",
+        sample_code="""from typing import OrderedDict
 class C:
-    mapping: OrderedDict[str, int]
-"""
-
-dataclass_ordereddict = """
-from dataclasses import dataclass
+    mapping: OrderedDict[str, int]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="dataclass_ordereddict",
+        sample_code="""from dataclasses import dataclass
 from typing import OrderedDict
 @dataclass
 class C:
-    cache: OrderedDict[str, int]
-"""
-
-
-### Overloads / Protocol
-
-
-overload_ordereddict = """
-from typing import overload, OrderedDict
+    cache: OrderedDict[str, int]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="overload_ordereddict",
+        sample_code="""from typing import overload, OrderedDict
 @overload
 def f(d: OrderedDict[str, int]) -> int: ...
 @overload
 def f(d: OrderedDict[int, str]) -> str: ...
-def f(d): ...
-"""
-
-protocol_ordereddict = """
-from typing import Protocol, OrderedDict
+def f(d): ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="protocol_ordereddict",
+        sample_code="""from typing import Protocol, OrderedDict
 class P(Protocol):
-    def f(self, d: OrderedDict[str, int]) -> None: ...
-"""
-
-
-### Type alias / forward ref / future annotations
-
-
-pep695_alias_ordereddict = """
+    def f(self, d: OrderedDict[str, int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="pep695_alias_ordereddict",
+        sample_code="""from typing import OrderedDict
+type StrIntOD = OrderedDict[str, int]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="forward_ref_ordereddict",
+        sample_code="""from typing import OrderedDict
+def f(d: "OrderedDict[str, int]") -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="future_annotations_ordereddict",
+        sample_code="""from __future__ import annotations
 from typing import OrderedDict
-type StrIntOD = OrderedDict[str, int]
-"""
-
-forward_ref_ordereddict = """
-from typing import OrderedDict
-def f(d: "OrderedDict[str, int]") -> None: ...
-"""
-
-future_annotations_ordereddict = """
-from __future__ import annotations
-from typing import OrderedDict
-def f(d: OrderedDict[str, int]) -> None: ...
-"""
-
-
-### Multiline / comments
-
-
-multiline_ordereddict = """
-from typing import OrderedDict
+def f(d: OrderedDict[str, int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="multiline_ordereddict",
+        sample_code="""from typing import OrderedDict
 def f(d: OrderedDict[
     str,
     int
-]) -> None: ...
-"""
-
-inline_comment_ordereddict = """
-from typing import OrderedDict
-d: OrderedDict[str, int]  # ordered mapping
-"""
-
-
-### Already new-style (should be unchanged)
-
-
-already_pep585_ordereddict = """
-from collections import OrderedDict
-def f(d: OrderedDict[str, int]) -> None: ...
-"""
-
-
-### Edge-ish
-
-
-bare_OrderedDict = """
-from typing import OrderedDict
-d: OrderedDict  # no parameters (deprecated)
-"""
-
-ordereddict_with_any = """
-from typing import OrderedDict, Any
-d: OrderedDict[str, Any]
-"""
+]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="inline_comment_ordereddict",
+        sample_code="""from typing import OrderedDict
+d: OrderedDict[str, int]  # ordered mapping""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="already_pep585_ordereddict",
+        sample_code="""from collections import OrderedDict
+def f(d: OrderedDict[str, int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="bare_OrderedDict",
+        sample_code="""from typing import OrderedDict
+d: OrderedDict  # no parameters (deprecated)""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="ordereddict_with_any",
+        sample_code="""from typing import OrderedDict, Any
+d: OrderedDict[str, Any]""",
+        errors=["reportDeprecated"],
+    ),
+]

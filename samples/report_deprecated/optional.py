@@ -1,132 +1,153 @@
-simple_optional_param = """
-def f(x: Optional[int]) -> None: ...
-"""
+from samples.sample_wrapper import SampleWrapper
 
-multi_optional_param = """
-def f(x: Optional[int], y: Optional[str]) -> None: ...
-"""
 
-nested_optional_param = """
-def f(x: Optional[Union[int, str]]) -> None: ...
-"""
-
-### Return types
-simple_optional_return = """
-def g() -> Optional[int]:
-    return 1
-"""
-
-nested_optional_return = """
-def g() -> Optional[Union[int, str]]:
-    return "hi"
-"""
-
-### Variables / annotations
-var_optional = """
-x: Optional[int] = None
-"""
-
-class_attr_optional = """
-class C:
-    field: Optional[str]
-"""
-
-### Collections / generics
-list_of_optional = """
-from typing import List
-L: List[Optional[int]] = []
-"""
-
-dict_with_optional_value = """
-from typing import Dict
-D: Dict[str, Optional[int]] = {}
-"""
-
-callable_with_optional_arg = """
-from typing import Callable
-F: Callable[[Optional[int]], None]
-"""
-
-### Aliasing / imports
-qualified_optional = """
-import typing
-x: typing.Optional[int] = None
-"""
-
-aliased_optional = """
-import typing as t
-x: t.Optional[int] = None
-"""
-
-imported_as_o = """
-from typing import Optional as O
-x: O[int] = None
-"""
-
-### Already PEP 604
-already_pep604_optional = """
-def f(x: int | None) -> None: ...
-"""
-
-### Inside Annotated / Literal
-annotated_optional = """
-from typing import Annotated
-def f(x: Annotated[Optional[int], "meta"]) -> None: ...
-"""
-
-literal_optional = """
-from typing import Literal
-def f(x: Optional[Literal["a", "b"]]) -> None: ...
-"""
-
-### Type alias / PEP 695
-alias_optional = """
-PathLike = Optional[str]
-"""
-
-pep695_alias_optional = """
-type MaybeInt = Optional[int]
-"""
-
-### Multiline / comments
-multi_line_optional = """
-def f(
+samples = [
+    SampleWrapper(
+        sample_name="simple_optional_param",
+        sample_code="""def f(x: Optional[int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="multi_optional_param",
+        sample_code="""def f(x: Optional[int], y: Optional[str]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="nested_optional_param",
+        sample_code="""def f(x: Optional[Union[int, str]]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="simple_optional_return",
+        sample_code="""def g() -> Optional[int]:
+    return 1""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="nested_optional_return",
+        sample_code="""def g() -> Optional[Union[int, str]]:
+    return "hi\"""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="var_optional",
+        sample_code="""x: Optional[int] = None""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="class_attr_optional",
+        sample_code="""class C:
+    field: Optional[str]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="list_of_optional",
+        sample_code="""from typing import List
+L: List[Optional[int]] = []""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="dict_with_optional_value",
+        sample_code="""from typing import Dict
+D: Dict[str, Optional[int]] = {}""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="callable_with_optional_arg",
+        sample_code="""from typing import Callable
+F: Callable[[Optional[int]], None]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="qualified_optional",
+        sample_code="""import typing
+x: typing.Optional[int] = None""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="aliased_optional",
+        sample_code="""import typing as t
+x: t.Optional[int] = None""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="imported_as_o",
+        sample_code="""from typing import Optional as O
+x: O[int] = None""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="already_pep604_optional",
+        sample_code="""def f(x: int | None) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="annotated_optional",
+        sample_code="""from typing import Annotated
+def f(x: Annotated[Optional[int], "meta"]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="literal_optional",
+        sample_code="""from typing import Literal
+def f(x: Optional[Literal["a", "b"]]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="alias_optional",
+        sample_code="""PathLike = Optional[str]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="pep695_alias_optional",
+        sample_code="""type MaybeInt = Optional[int]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="multi_line_optional",
+        sample_code="""def f(
     x: Optional[
         int
     ]
-) -> None: ...
-"""
-
-multi_line_optional_with_comment = """
-def f(x: Optional[
+) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="multi_line_optional_with_comment",
+        sample_code="""def f(x: Optional[
     int,  # integer or None
-]) -> None: ...
-"""
-
-### Protocols / TypedDicts
-typed_dict_optional = """
-from typing import TypedDict
+]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="typed_dict_optional",
+        sample_code="""from typing import TypedDict
 class TD(TypedDict):
-    k: Optional[int]
-"""
-
-protocol_optional = """
-from typing import Protocol
+    k: Optional[int]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="protocol_optional",
+        sample_code="""from typing import Protocol
 class P(Protocol):
-    def f(self, x: Optional[int]) -> None: ...
-"""
-
-### Weird / edge cases
-optional_none = """
-def f(x: Optional[None]) -> None: ...
-"""
-
-optional_any = """
-from typing import Any
-def f(x: Optional[Any]) -> None: ...
-"""
-
-optional_never = """
-from typing_extensions import Never
-def f(x: Optional[Never]) -> None: ...
-"""
+    def f(self, x: Optional[int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="optional_none",
+        sample_code="""def f(x: Optional[None]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="optional_any",
+        sample_code="""from typing import Any
+def f(x: Optional[Any]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="optional_never",
+        sample_code="""from typing_extensions import Never
+def f(x: Optional[Never]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+]

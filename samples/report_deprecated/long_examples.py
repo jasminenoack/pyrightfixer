@@ -1,5 +1,10 @@
-long_1 = """
-from typing import Union, Optional, List
+from samples.sample_wrapper import SampleWrapper
+
+
+samples = [
+    SampleWrapper(
+        sample_name="long_1",
+        sample_code="""from typing import Union, Optional, List
 from types import NoneType
 from pathlib import Path
 
@@ -19,11 +24,12 @@ def good_optional(x: int | None) -> None:
 
 # unrelated, still valid
 def takes_none(n: NoneType) -> None:
-    ...
-"""
-
-long_2 = """
-from typing import Dict, List, OrderedDict
+    ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="long_2",
+        sample_code="""from typing import Dict, List, OrderedDict
 from collections import defaultdict, deque, Counter
 from dataclasses import dataclass
 
@@ -40,11 +46,12 @@ new_deque: deque[int] = deque()
 class User:
     name: str
     tags: list[str]
-    counts: Counter[str]
-"""
-
-long_3 = """
-from typing import Tuple, Type
+    counts: Counter[str]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="long_3",
+        sample_code="""from typing import Tuple, Type
 from types import NoneType
 
 # deprecated
@@ -56,11 +63,12 @@ numbers: tuple[int, ...] = (1, 2, 3)
 cls: type[str]
 
 # valid modern typing
-none_value: NoneType = None
-"""
-
-long_4 = """
-from __future__ import annotations
+none_value: NoneType = None""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="long_4",
+        sample_code="""from __future__ import annotations
 from typing import Callable, Annotated, Literal, Dict, List, Optional, Union
 
 # deprecated in args
@@ -71,11 +79,12 @@ G: Callable[[list[int | None], dict[str, int | str]], None]
 
 # other features to ensure no false positives
 X = Annotated[int, "meta"]
-Y = Literal["a", "b"]
-"""
-
-long_5 = """
-from typing import Dict, List, OrderedDict, DefaultDict, Deque, Counter, ChainMap
+Y = Literal["a", "b"]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="long_5",
+        sample_code="""from typing import Dict, List, OrderedDict, DefaultDict, Deque, Counter, ChainMap
 from collections import defaultdict, deque, Counter as CCounter, ChainMap as CChainMap
 from dataclasses import dataclass
 
@@ -100,12 +109,12 @@ new_cm: CChainMap[str, int] = CChainMap()
 class User:
     name: str
     tags: list[str]
-    scores: dict[str, int]
-
-"""
-
-long_6 = """
-import typing as t
+    scores: dict[str, int]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="long_6",
+        sample_code="""import typing as t
 from typing import List as L, Dict as D, Union as U, Optional as O, Type as T
 from types import NoneType
 from collections import deque, defaultdict
@@ -123,11 +132,12 @@ n: dict[str, int] = {}
 dq: deque[int] = deque()
 dd = defaultdict(int)
 
-def takes_none(n: NoneType) -> None: ...
-"""
-
-long_7 = """
-from typing import Protocol, TypedDict, Dict, List
+def takes_none(n: NoneType) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="long_7",
+        sample_code="""from typing import Protocol, TypedDict, Dict, List
 
 # deprecated inside containers
 Data: Dict[str, List[int]] = {}
@@ -141,11 +151,12 @@ class P(Protocol):
     def f(self, x: list[int]) -> None: ...
 
 def use(p: P, payload: Payload) -> None:
-    p.f([payload["id"]])
-"""
-
-long_8 = """
-from typing import Tuple, Type, Union
+    p.f([payload["id"]])""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="long_8",
+        sample_code="""from typing import Tuple, Type, Union
 from types import NoneType
 
 # deprecated
@@ -158,11 +169,12 @@ mixed: Tuple[int, Union[str, bytes]]
 pair_ok: tuple[int, str] = (1, "a")
 variadic_ok: tuple[int, ...] = (1, 2, 3)
 cls_ok: type[str]
-none_val: NoneType = None
-"""
-
-long_9 = """
-from __future__ import annotations
+none_val: NoneType = None""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="long_9",
+        sample_code="""from __future__ import annotations
 from typing import Union, Optional, List, Dict
 from types import NoneType
 from pathlib import Path
@@ -180,5 +192,7 @@ paths: dict[str, Path | str] = {}
 
 # unrelated correct usage
 def takes_none(n: NoneType) -> None: ...
-items: list[int] = [1, 2, 3]
-"""
+items: list[int] = [1, 2, 3]""",
+        errors=["reportDeprecated"],
+    ),
+]

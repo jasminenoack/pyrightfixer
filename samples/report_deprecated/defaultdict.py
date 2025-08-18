@@ -1,171 +1,162 @@
-### Basics (params / returns / vars)
+from samples.sample_wrapper import SampleWrapper
 
 
-defaultdict_param = """
-from typing import DefaultDict
-def f(d: DefaultDict[str, int]) -> None: ...
-"""
-
-defaultdict_return = """
-from typing import DefaultDict
-def g() -> DefaultDict[str, int]: ...
-"""
-
-defaultdict_var = """
-from typing import DefaultDict
-d: DefaultDict[str, int] = DefaultDict(int)
-"""
-
-
-### Qualified / aliased imports
-
-
-qualified_defaultdict = """
-import typing
-def f(d: typing.DefaultDict[str, int]) -> None: ...
-"""
-
-aliased_defaultdict = """
-import typing as t
-def f(d: t.DefaultDict[str, int]) -> None: ...
-"""
-
-imported_as_DD = """
-from typing import DefaultDict as DD
-def f(d: DD[str, int]) -> None: ...
-"""
-
-
-### Nested / mixed generics
-
-
-defaultdict_of_lists = """
-from typing import DefaultDict, List
-d: DefaultDict[str, List[int]] = DefaultDict(list)
-"""
-
-defaultdict_of_unions = """
-from typing import DefaultDict, Union
-d: DefaultDict[str, Union[int, float]] = DefaultDict(int)
-"""
-
-nested_defaultdicts = """
-from typing import DefaultDict
-nested: DefaultDict[str, DefaultDict[int, str]] = DefaultDict(dict)
-"""
-
-
-### Callable / Tuple / Set interactions
-
-
-callable_with_defaultdict = """
-from typing import Callable, DefaultDict
-F: Callable[[DefaultDict[str, int]], None]
-"""
-
-tuple_with_defaultdicts = """
-from typing import Tuple, DefaultDict
-T: Tuple[DefaultDict[str, int], DefaultDict[int, str]]
-"""
-
-set_of_defaultdicts = """
-from typing import Set, DefaultDict
-S: Set[DefaultDict[str, int]]
-"""
-
-
-### Class attributes / dataclass
-
-
-class_attr_defaultdict = """
-from typing import DefaultDict
+samples = [
+    SampleWrapper(
+        sample_name="defaultdict_param",
+        sample_code="""from typing import DefaultDict
+def f(d: DefaultDict[str, int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="defaultdict_return",
+        sample_code="""from typing import DefaultDict
+def g() -> DefaultDict[str, int]: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="defaultdict_var",
+        sample_code="""from typing import DefaultDict
+d: DefaultDict[str, int] = DefaultDict(int)""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="qualified_defaultdict",
+        sample_code="""import typing
+def f(d: typing.DefaultDict[str, int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="aliased_defaultdict",
+        sample_code="""import typing as t
+def f(d: t.DefaultDict[str, int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="imported_as_DD",
+        sample_code="""from typing import DefaultDict as DD
+def f(d: DD[str, int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="defaultdict_of_lists",
+        sample_code="""from typing import DefaultDict, List
+d: DefaultDict[str, List[int]] = DefaultDict(list)""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="defaultdict_of_unions",
+        sample_code="""from typing import DefaultDict, Union
+d: DefaultDict[str, Union[int, float]] = DefaultDict(int)""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="nested_defaultdicts",
+        sample_code="""from typing import DefaultDict
+nested: DefaultDict[str, DefaultDict[int, str]] = DefaultDict(dict)""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="callable_with_defaultdict",
+        sample_code="""from typing import Callable, DefaultDict
+F: Callable[[DefaultDict[str, int]], None]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="tuple_with_defaultdicts",
+        sample_code="""from typing import Tuple, DefaultDict
+T: Tuple[DefaultDict[str, int], DefaultDict[int, str]]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="set_of_defaultdicts",
+        sample_code="""from typing import Set, DefaultDict
+S: Set[DefaultDict[str, int]]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="class_attr_defaultdict",
+        sample_code="""from typing import DefaultDict
 class C:
-    mapping: DefaultDict[str, int]
-"""
-
-dataclass_defaultdict = """
-from dataclasses import dataclass
+    mapping: DefaultDict[str, int]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="dataclass_defaultdict",
+        sample_code="""from dataclasses import dataclass
 from typing import DefaultDict
 @dataclass
 class C:
-    cache: DefaultDict[str, int]
-"""
-
-
-### Overloads / Protocol
-
-
-overload_defaultdict = """
-from typing import overload, DefaultDict
+    cache: DefaultDict[str, int]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="overload_defaultdict",
+        sample_code="""from typing import overload, DefaultDict
 @overload
 def f(d: DefaultDict[str, int]) -> int: ...
 @overload
 def f(d: DefaultDict[int, str]) -> str: ...
-def f(d): ...
-"""
-
-protocol_defaultdict = """
-from typing import Protocol, DefaultDict
+def f(d): ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="protocol_defaultdict",
+        sample_code="""from typing import Protocol, DefaultDict
 class P(Protocol):
-    def f(self, d: DefaultDict[str, int]) -> None: ...
-"""
-
-
-### Type alias / forward ref / future annotations
-
-
-pep695_alias_defaultdict = """
+    def f(self, d: DefaultDict[str, int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="pep695_alias_defaultdict",
+        sample_code="""from typing import DefaultDict
+type StrIntDD = DefaultDict[str, int]""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="forward_ref_defaultdict",
+        sample_code="""from typing import DefaultDict
+def f(d: "DefaultDict[str, int]") -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="future_annotations_defaultdict",
+        sample_code="""from __future__ import annotations
 from typing import DefaultDict
-type StrIntDD = DefaultDict[str, int]
-"""
-
-forward_ref_defaultdict = """
-from typing import DefaultDict
-def f(d: "DefaultDict[str, int]") -> None: ...
-"""
-
-future_annotations_defaultdict = """
-from __future__ import annotations
-from typing import DefaultDict
-def f(d: DefaultDict[str, int]) -> None: ...
-"""
-
-
-### Multiline / comments
-
-
-multiline_defaultdict = """
-from typing import DefaultDict
+def f(d: DefaultDict[str, int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="multiline_defaultdict",
+        sample_code="""from typing import DefaultDict
 def f(d: DefaultDict[
     str,
     int
-]) -> None: ...
-"""
-
-inline_comment_defaultdict = """
-from typing import DefaultDict
-d: DefaultDict[str, int]  # mapping
-"""
-
-
-### Already new-style (should be unchanged)
-
-
-already_pep585_defaultdict = """
-from collections import defaultdict
-def f(d: defaultdict[str, int]) -> None: ...
-"""
-
-
-### Edge-ish
-
-
-bare_DefaultDict = """
-from typing import DefaultDict
-d: DefaultDict  # no parameters (deprecated)
-"""
-
-defaultdict_with_any = """
-from typing import DefaultDict, Any
-d: DefaultDict[str, Any]
-"""
+]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="inline_comment_defaultdict",
+        sample_code="""from typing import DefaultDict
+d: DefaultDict[str, int]  # mapping""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="already_pep585_defaultdict",
+        sample_code="""from collections import defaultdict
+def f(d: defaultdict[str, int]) -> None: ...""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="bare_DefaultDict",
+        sample_code="""from typing import DefaultDict
+d: DefaultDict  # no parameters (deprecated)""",
+        errors=["reportDeprecated"],
+    ),
+    SampleWrapper(
+        sample_name="defaultdict_with_any",
+        sample_code="""from typing import DefaultDict, Any
+d: DefaultDict[str, Any]""",
+        errors=["reportDeprecated"],
+    ),
+]

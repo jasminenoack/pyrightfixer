@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyfixer"
+version = "0.1.0"
+description = "Automatic Pyright fixer"
+authors = [{ name="Your Name", email="you@example.com" }]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "libcst",
+    "typer"
+]
+
+[project.scripts]
+pyfixer = "pyrightfixer.cli:app"
+
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+    "pyright"
+]

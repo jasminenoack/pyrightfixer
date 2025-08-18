@@ -1,4 +1,3 @@
-
 simple_optional_param = """
 def f(x: Optional[int]) -> None: ...
 """

@@ -74,7 +74,7 @@ X = Annotated[int, "meta"]
 Y = Literal["a", "b"]
 """
 
-long_5 ="""
+long_5 = """
 from typing import Dict, List, OrderedDict, DefaultDict, Deque, Counter, ChainMap
 from collections import defaultdict, deque, Counter as CCounter, ChainMap as CChainMap
 from dataclasses import dataclass

@@ -15,5 +15,11 @@ def fix(name: str = typer.Argument(".", help="Location to fix issues")):
     typer.echo(f"Goodbye, {name}!")
 
 
+@app.command()
+def generate(path: str = typer.Argument(help="Path to the generator files")):
+    """Generate test files based on the provided path"""
+    typer.echo(f"Generating test files at {path}...")
+
+
 if __name__ == "__main__":
     app()

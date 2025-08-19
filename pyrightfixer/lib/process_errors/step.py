@@ -1,6 +1,5 @@
 from abc import ABC
 
-from pyparsing import abstractmethod
 import typer
 
 from pyrightfixer.lib.process_errors.file_actions import Fix, Target, get_from_file, replace_in_file
@@ -49,39 +48,3 @@ class StepBase(ABC):
         replace_in_file(
             fix=self.proposed_fix
         )
-
-
-
-class StepDeprecated(StepBase):
-    @classmethod
-    def choose_fix(cls, error: Diagnostic) -> None: 
-        code_snippet= cls.get_actual_code_snipet(error)
-        match code_snippet.exact_target:
-            case "Optional":
-                return StepOptional(
-                    error=error,
-                    code_snippet=code_snippet
-                )
-            case _: 
-                return StepDeprecated(
-                    error=error,
-                    code_snippet=code_snippet
-                )
-
-        
-
-class StepOptional(StepDeprecated):
-    def develop_theory(self) -> None:
-        self.code_snippet.expand_target(add_brackets=True)
-        current_code = self.code_snippet.expanded_target
-        assert current_code.startswith("Optional[")
-        assert current_code.endswith("]")
-        new_code = current_code[9:-1]
-        new_string = f"{new_code} | None"
-        self.proposed_fix = Fix(
-            file=self.code_snippet.file_name,
-            range=self.code_snippet.location,
-            new_code=new_string
-        )
-
-    

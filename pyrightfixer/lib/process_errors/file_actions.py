@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-import logging
 from pyrightfixer.lib.pyright import Location, Range
 
 
@@ -36,7 +35,7 @@ class Target:
                 bracket_end_found = self.expanded_target.count("[") == self.expanded_target.count("]")
             else:
                 self.expanded_target += current_addition
-                end_character += 0
+                end_character = 0
                 end_line += 1
             self.location = Range(
                 start=self.location.start,
@@ -82,26 +81,26 @@ class Fix:
     new_code: str
 
 
-def get_from_file(file_path: str, range: Range) -> Target:
+def get_from_file(file_path: str, current_range: Range) -> Target:
     with open(file_path, "r") as f:
         lines = f.readlines()
 
-    if range.start.line == range.end.line:
-        exact_str = lines[range.start.line][range.start.character : range.end.character]
+    if current_range.start.line == current_range.end.line:
+        exact_str = lines[current_range.start.line][current_range.start.character : current_range.end.character]
         return Target(
             exact_target=exact_str,
             file_name=file_path,
-            location=range,
+            location=current_range,
             expanded_target=exact_str,
         )
-    exact_str = lines[range.start.line][range.start.character :]
-    for line in range(range.start.line + 1, range.end.line):
+    exact_str = lines[current_range.start.line][current_range.start.character :]
+    for line in range(current_range.start.line + 1, current_range.end.line):
         exact_str += lines[line]
-    exact_str += lines[range.end.line][: range.end.character]
+    exact_str += lines[current_range.end.line][: current_range.end.character]
     return Target(
         exact_target=exact_str,
         file_name=file_path,
-        location=range,
+        location=current_range,
         expanded_target=exact_str,
     )
 
@@ -113,20 +112,24 @@ def get_from_file(file_path: str, range: Range) -> Target:
 
 def replace_in_file(fix: Fix) -> None:
     file_path = fix.file
-    range = fix.range
+    current_range = fix.range
     new_text = fix.new_code
     with open(file_path, "r") as f:
         lines = f.readlines()
-    if range.start.line == range.end.line:
-        lines[range.start.line] = (
-            lines[range.start.line][: range.start.character]
-            + new_text
-            + lines[range.start.line][range.end.character :]
-        )
-    else:
-        lines[range.start.line] = lines[range.start.line][: range.start.character] + new_text + lines[range.end.line][range.end.character :]
-        for line in range(range.start.line + 1, range.end.line):
-            lines[line] = ""
+    new_lines = []
+    for i, line in enumerate(lines):
+        if i < current_range.start.line or i > current_range.end.line:
+            new_lines.append(line)
+        elif i == current_range.start.line and i == current_range.end.line:
+            new_lines.append(
+                line[:current_range.start.character] + new_text + line[current_range.end.character:]
+            )
+        elif i == current_range.start.line:
+            new_lines.append(line[:current_range.start.character] + new_text)
+        elif i == current_range.end.line:
+            new_lines.append(line[current_range.end.character:])
+        else:
+            new_lines.append("")
 
     with open(file_path, "w") as f:
-        f.writelines(lines)
+        f.writelines(new_lines)

@@ -1,5 +1,6 @@
 from collections import defaultdict
 from dataclasses import dataclass
+import subprocess
 
 import typer
 from pyrightfixer.lib.pyright import Location, Range
@@ -91,11 +92,7 @@ class Target:
                 self.expand_to_full_import()
                 return
             
-        first_non_docstring_line = 0
-        if lines[0].startswith('"""'):
-            first_non_docstring_line = 1
-            while not '"""' in lines[first_non_docstring_line]:
-                first_non_docstring_line += 1
+        first_non_docstring_line = self.first_non_docstring_line(lines)
         
         self.location = Range(
             start=Location(line=first_non_docstring_line + 1, character=0),
@@ -103,6 +100,24 @@ class Target:
         )
         self.exact_target = ""
         self.expanded_target = ""
+
+    def first_non_docstring_line(self, lines: list[str]) -> int:
+        first_non_docstring_line = 0
+        if lines[0].startswith('"""'):
+            first_non_docstring_line = 1
+            while not '"""' in lines[first_non_docstring_line]:
+                first_non_docstring_line += 1
+        return first_non_docstring_line
+
+    def move_to_imports(self) -> "Target":
+        with open(self.file_name, "r") as f:
+            lines = f.readlines()
+        first_non_docstring_line = self.first_non_docstring_line(lines)
+        
+        self.location = Range(
+            start=Location(line=first_non_docstring_line + 1, character=0),
+            end=Location(line=first_non_docstring_line + 1, character=0),
+        )
 
 @dataclass
 class Fix: 
@@ -180,3 +195,10 @@ def replace_in_file(fix: Fix) -> None:
 
 def check_if_file_is_dirty(file_path: str) -> bool:
     return file_path in dirty_files
+
+def grep(pattern: str) -> list[str]:
+    p = subprocess.run(
+        ["grep", "-r", "-E", pattern, str('.')],
+        capture_output=True, text=True
+    )
+    return p.stdout.splitlines() if p.stdout else []

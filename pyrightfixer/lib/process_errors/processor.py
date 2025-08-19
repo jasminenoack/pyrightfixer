@@ -5,6 +5,7 @@ from pyrightfixer.lib.process_errors.steps.report_invalid_type_arguments import 
 from pyrightfixer.lib.process_errors.steps.report_deprecated_errors import StepDeprecated
 from pyrightfixer.lib.process_errors.steps.report_missing_type_argument import StepMissingType
 from pyrightfixer.lib.process_errors.steps.report_undefined_variable import StepReportUndefined
+from pyrightfixer.lib.process_errors.steps.report_unsupported_dunder_all import StepDunderAll
 from pyrightfixer.lib.process_errors.steps.report_unused import StepUnusedImport
 from pyrightfixer.lib.process_errors.steps.step_base import StepBase
 from pyrightfixer.lib.pyright import Diagnostic
@@ -22,6 +23,7 @@ class Processor:
         "reportInvalidTypeArguments": StepInvalidTypeArguments,
         "reportUndefinedVariable": StepReportUndefined,
         "reportImplicitStringConcatenation": ImplicitStringConcatenation,
+        "reportUnsupportedDunderAll": StepDunderAll
     }
 
     def __init__(self, errors: list[Diagnostic]) -> None:

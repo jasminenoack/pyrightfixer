@@ -27,6 +27,11 @@ class StepReportUndefined(StepBase):
                     error=error,
                     code_snippet=code_snippet
                 )
+            case "Sequence":
+                return AddToTyping(
+                    error=error,
+                    code_snippet=code_snippet
+                )
             case _: 
                 return cls(
                     error=error,

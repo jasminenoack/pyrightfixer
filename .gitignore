@@ -2,3 +2,4 @@ pyfixer.egg-info
 .pytest_cache/
 __pycache__/
 .pyc
+scratch/

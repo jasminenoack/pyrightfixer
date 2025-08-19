@@ -1,5 +1,6 @@
 import typer
 from pyrightfixer.lib.process_errors.file_actions import check_if_file_is_dirty
+from pyrightfixer.lib.process_errors.steps.report_implicit_string_concatenation import ImplicitStringConcatenation
 from pyrightfixer.lib.process_errors.steps.report_invalid_type_arguments import StepInvalidTypeArguments
 from pyrightfixer.lib.process_errors.steps.report_deprecated_errors import StepDeprecated
 from pyrightfixer.lib.process_errors.steps.report_missing_type_argument import StepMissingType
@@ -20,6 +21,7 @@ class Processor:
         "reportMissingTypeArgument": StepMissingType,
         "reportInvalidTypeArguments": StepInvalidTypeArguments,
         "reportUndefinedVariable": StepReportUndefined,
+        "reportImplicitStringConcatenation": ImplicitStringConcatenation,
     }
 
     def __init__(self, errors: list[Diagnostic]) -> None:
@@ -29,18 +31,20 @@ class Processor:
         self.finished = False
         self.current_step: StepBase | None = None
 
-    def next(self, fix=False) -> StepBase | None:
+    def next(self, log: bool=True) -> StepBase | None:
         if not self.errors:
             self.finished = True
             return None
         self.current_error = self.errors.pop()
         if check_if_file_is_dirty(self.current_error.file):
-            typer.echo(f"File {self.current_error.file} is modified in unsafe way already, skipping.")
+            if log:
+                typer.echo(f"File {self.current_error.file} is modified in unsafe way already, skipping.")
             self.skip()
             return None
-        typer.echo(f"Processing error:\n    {self.current_error.rule}:{self.current_error.message}")
+        if log:
+            typer.echo(f"Processing error:\n    {self.current_error.rule}:{self.current_error.message}")
         self.current_step = self.step_mapping[self.current_error.rule].choose_fix(self.current_error)
-        self.current_step.process_theory()
+        self.current_step.process_theory(log)
         return self.current_step
         
     def skip(self) -> None: 

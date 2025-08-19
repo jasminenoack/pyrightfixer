@@ -5,7 +5,7 @@ from pyrightfixer.lib.process_errors.steps.step_base import StepBase
 
 
 class StepUnusedImport(StepBase):
-    def develop_theory(self):
+    def develop_theory(self, log: bool=True):
         self.code_snippet.expand_to_full_import()
         unused_import = self.code_snippet.exact_target
         line = self.code_snippet.expanded_target

@@ -35,7 +35,7 @@ class AppendArguments(StepInvalidTypeArguments):
         super().__init__(error, code_snippet)
         self.additional_needed = additional_needed
 
-    def develop_theory(self) -> None:
+    def develop_theory(self, log: bool=True) -> None:
         current_code = self.code_snippet.expanded_target
         if current_code.endswith(","):
             current_code = current_code[:-1].strip()
@@ -49,7 +49,7 @@ class AppendArguments(StepInvalidTypeArguments):
 
 
 # class StepAppendAnyAny(StepMissingType):
-#     def develop_theory(self) -> None:
+#     def develop_theory(self, log: bool=True) -> None:
 #         self.proposed_fix = Fix(
 #             file=self.code_snippet.file_name,
 #             range=self.code_snippet.location,
@@ -57,7 +57,7 @@ class AppendArguments(StepInvalidTypeArguments):
 #         )
 
 # class AppendAny(StepMissingType):
-#     def develop_theory(self) -> None:
+#     def develop_theory(self, log: bool=True) -> None:
 #         self.proposed_fix = Fix(
 #             file=self.code_snippet.file_name,
 #             range=self.code_snippet.location,
@@ -68,7 +68,7 @@ class AppendArguments(StepInvalidTypeArguments):
         
 
 # class StepOptional(StepDeprecated):
-#     def develop_theory(self) -> None:
+#     def develop_theory(self, log: bool=True) -> None:
 #         self.code_snippet.add_brackets_to_target()
 #         current_code = self.code_snippet.expanded_target
 #         assert current_code.startswith("Optional[")
@@ -88,7 +88,7 @@ class AppendArguments(StepInvalidTypeArguments):
 #         super().__init__(error, code_snippet)
 #         self.auto_fix = os.environ.get("PYRIGHTFIXER_AUTO_DOWNCASE") == "1"
     
-#     def develop_theory(self):
+#     def develop_theory(self, log: bool=True):
 #         current_code = self.code_snippet.expanded_target
 #         assert current_code in ["List", "Dict", "Set", "Tuple", "Type"]
 #         self.proposed_fix = Fix(
@@ -98,7 +98,7 @@ class AppendArguments(StepInvalidTypeArguments):
 #         )
 
 # class StepUnion(StepDeprecated):
-#     def develop_theory(self) -> None:
+#     def develop_theory(self, log: bool=True) -> None:
 #         self.code_snippet.add_brackets_to_target()
 #         current_code = self.code_snippet.expanded_target
 #         assert current_code.startswith("Union[")

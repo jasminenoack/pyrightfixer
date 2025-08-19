@@ -81,5 +81,41 @@ def stepfix(
             pass
 
 
+@app.command()
+def autofix(
+    path: str = typer.Argument(".", help="Path to fix issues step by step"),
+    errors: str = typer.Option(
+        ",".join(Processor.step_mapping.keys()), "--errors", "-e", help="Comma-separated list of errors to fix"
+    ),
+):
+    """Fix issues step by step in the provided path"""
+    typer.echo(f"Step fixing {path} for errors: {errors}...")
+    result = run_pyright(path)
+    original_total = result.summary.error_count
+    typer.echo(f"Original total errors: {original_total}")
+    errors_types = errors.split(",")
+    all_errors = get_matching_errors(result, errors=errors_types)
+    typer.echo(f"Errors to fix: {len(all_errors)}")
+    typer.echo("")
+
+    processor = Processor(all_errors)
+
+    fixed = 0
+
+    while not processor.finished:
+        step = processor.next(log=False)
+
+        if step and step.proposed_fix:
+            processor.fix()
+            fixed += 1
+            continue
+        elif step and not step.proposed_fix:
+            continue
+        else:
+            pass
+
+    typer.echo(f"Fixed {fixed} errors.")
+
+
 if __name__ == "__main__":
     app()

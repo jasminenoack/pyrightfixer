@@ -28,25 +28,27 @@ class StepBase(ABC):
         code_snippet = get_from_file(error.file, error.range)
         return code_snippet
     
-    def develop_theory(self) -> None:
-        typer.echo("No proposed fix available for this error.")
+    def develop_theory(self, log: bool=True) -> None:
+        if log:
+            typer.echo("No proposed fix available for this error.")
 
-    def process_theory(self) -> None:
-        self.develop_theory()
+    def process_theory(self, log: bool=True) -> None:
+        self.develop_theory(log)
         if self.already_fixed:
             return
 
         original_code = self.code_snippet.expanded_target
-        typer.echo(f"Current code ({"/".join(self.code_snippet.file_name.split("/")[-3:])}):")
-        typer.echo('------------------------------')
-        typer.echo(original_code)
-        typer.echo('------------------------------')
-        typer.echo("")
-        if self.proposed_fix:
-            typer.echo("Proposed fix:")
+        if log:
+            typer.echo(f"Current code ({"/".join(self.code_snippet.file_name.split("/")[-3:])}):")
             typer.echo('------------------------------')
-            typer.echo(self.proposed_fix.new_code)
+            typer.echo(original_code)
             typer.echo('------------------------------')
+            typer.echo("")
+            if self.proposed_fix:
+                typer.echo("Proposed fix:")
+                typer.echo('------------------------------')
+                typer.echo(self.proposed_fix.new_code)
+                typer.echo('------------------------------')
 
     def fix(self) -> None:
         replace_in_file(

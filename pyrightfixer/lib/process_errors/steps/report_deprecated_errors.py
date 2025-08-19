@@ -54,7 +54,7 @@ class StepDeprecated(StepBase):
         
 
 class StepOptional(StepDeprecated):
-    def develop_theory(self) -> None:
+    def develop_theory(self, log: bool=True) -> None:
         self.code_snippet.add_brackets_to_target()
         current_code = self.code_snippet.expanded_target
         assert current_code.startswith("Optional[")
@@ -74,7 +74,7 @@ class StepDowncase(StepDeprecated):
         super().__init__(error, code_snippet)
         self.auto_fix = os.environ.get("PYRIGHTFIXER_AUTO_DOWNCASE") == "1"
     
-    def develop_theory(self):
+    def develop_theory(self, log: bool=True):
         current_code = self.code_snippet.expanded_target
         assert current_code in ["List", "Dict", "Set", "Tuple", "Type"]
         self.proposed_fix = Fix(
@@ -84,7 +84,7 @@ class StepDowncase(StepDeprecated):
         )
 
 class StepUnion(StepDeprecated):
-    def develop_theory(self) -> None:
+    def develop_theory(self, log: bool=True) -> None:
         self.code_snippet.add_brackets_to_target()
         current_code = self.code_snippet.expanded_target
         assert current_code.startswith("Union[")

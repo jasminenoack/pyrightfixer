@@ -213,3 +213,14 @@ def pyright_file_diagnostics(
                     typer.echo(f"        {rule}: {count}")
             else:
                 typer.echo(f"        Total information: {sum(rules.values())}")
+
+
+def get_matching_errors(
+    report: Report, errors: list[str]
+) -> list[Diagnostic]:
+    """Get diagnostics that match the specified error codes."""
+    matching_errors = []
+    for diag in report.general_diagnostics:
+        if diag.rule in errors:
+            matching_errors.append(diag)
+    return matching_errors

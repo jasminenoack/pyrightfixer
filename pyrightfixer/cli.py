@@ -1,7 +1,9 @@
 import typer
 
 from pyrightfixer.lib.files import get_file_list
-from pyrightfixer.lib.pyright_run import (
+from pyrightfixer.lib.process_errors.processor import Processor
+from pyrightfixer.lib.pyright import (
+    get_matching_errors,
     print_meta_info,
     pyright_error_diagnostics,
     pyright_file_diagnostics,
@@ -33,32 +35,44 @@ def scan(
     if show_file_diagnostics:
         pyright_file_diagnostics(result, detailed)
 
-
 @app.command()
-def sandbox(name: str = typer.Argument(".", help="location to run the sandbox")):
-    """Show what the command would fix"""
-    typer.echo(f"Running sandbox on {name}...")
-    result = run_pyright(name)
+def stepfix(
+    path: str = typer.Argument(".", help="Path to fix issues step by step"),
+    errors: str = typer.Option(
+        "reportDeprecated", "--errors", "-e", help="Comma-separated list of errors to fix"
+    ),
+):
+    """Fix issues step by step in the provided path"""
+    typer.echo(f"Step fixing {path} for errors: {errors}...")
+    result = run_pyright(path)
+    original_total = result.summary.error_count
+    typer.echo(f"Original total errors: {original_total}")
+    errors_types = errors.split(",")
+    all_errors = get_matching_errors(result, errors=errors_types)
+    typer.echo(f"Errors to fix: {len(all_errors)}")
     typer.echo("")
-    pyright_error_diagnostics(result)
-    typer.echo("")
-    pyright_file_diagnostics(result, detailed=False)
-    typer.echo("")
-    pyright_file_diagnostics(result, detailed=True)
 
+    processor = Processor(all_errors)
 
-@app.command()
-def fix(name: str = typer.Argument(".", help="Location to fix issues")):
-    """Fix the issues in this file"""
-    typer.echo(f"Goodbye, {name}!")
+    while not processor.finished:
+        step = processor.next()
 
-
-@app.command()
-def generate(path: str = typer.Argument(help="Path to the generator files")):
-    """Generate test files based on the provided path"""
-    files = get_file_list(path)
-    for file in files:
-        typer.echo(f"Processing file: {file}")
+        if step and step.proposed_fix:
+            result = typer.confirm("Fix this error?")
+            if result:
+                typer.echo("Applying fix...")
+                processor.fix()
+            else:
+                typer.echo("Skipping this error.")
+                processor.skip()
+            typer.echo("")
+            typer.echo("")
+        elif step and not step.proposed_fix:
+            typer.echo("")
+            typer.echo("")
+            continue
+        else:
+            pass
 
 
 if __name__ == "__main__":

@@ -39,6 +39,11 @@ class StepDeprecated(StepBase):
                     error=error,
                     code_snippet=code_snippet
                 )
+            case "Type":
+                return StepDowncase(
+                    error=error,
+                    code_snippet=code_snippet
+                )
             case _: 
                 return StepDeprecated(
                     error=error,
@@ -66,7 +71,7 @@ class StepOptional(StepDeprecated):
 class StepDowncase(StepDeprecated):
     def develop_theory(self):
         current_code = self.code_snippet.expanded_target
-        assert current_code in ["List", "Dict", "Set", "Tuple"]
+        assert current_code in ["List", "Dict", "Set", "Tuple", "Type"]
         self.proposed_fix = Fix(
             file=self.code_snippet.file_name,
             range=self.code_snippet.location,

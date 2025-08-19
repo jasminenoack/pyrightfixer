@@ -57,7 +57,12 @@ def stepfix(
     while not processor.finished:
         step = processor.next()
 
-        if step and step.proposed_fix:
+        if step and step.proposed_fix and step.auto_fix:
+            typer.echo("Auto-fixing error...")
+            typer.echo("")
+            processor.fix()
+            continue
+        elif step and step.proposed_fix:
             result = typer.confirm("Fix this error?")
             if result:
                 typer.echo("Applying fix...")
@@ -67,6 +72,7 @@ def stepfix(
                 processor.skip()
             typer.echo("")
             typer.echo("")
+            continue
         elif step and not step.proposed_fix:
             typer.echo("")
             typer.echo("")

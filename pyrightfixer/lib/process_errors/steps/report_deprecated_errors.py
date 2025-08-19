@@ -1,5 +1,6 @@
 
-from pyrightfixer.lib.process_errors.file_actions import Fix
+import os
+from pyrightfixer.lib.process_errors.file_actions import Fix, Target
 from pyrightfixer.lib.process_errors.steps.step_base import StepBase
 from pyrightfixer.lib.pyright import Diagnostic
 
@@ -69,6 +70,10 @@ class StepOptional(StepDeprecated):
     
 
 class StepDowncase(StepDeprecated):
+    def __init__(self, error: Diagnostic, code_snippet: Target) -> None:
+        super().__init__(error, code_snippet)
+        self.auto_fix = os.environ.get("PYRIGHTFIXER_AUTO_DOWNCASE") == "1"
+    
     def develop_theory(self):
         current_code = self.code_snippet.expanded_target
         assert current_code in ["List", "Dict", "Set", "Tuple", "Type"]
@@ -85,6 +90,9 @@ class StepUnion(StepDeprecated):
         assert current_code.startswith("Union[")
         assert current_code.endswith("]")
         current_code = current_code[6:-1]
+        current_code = current_code.replace("\n", " ").strip()
+        if current_code.endswith(","):
+            current_code = current_code[:-1].strip()
         new_code = ""
         level = 0
         for char in current_code:
@@ -93,7 +101,9 @@ class StepUnion(StepDeprecated):
                 level += 1
             elif char == "]":
                 level -= 1
-            if char == "," and level == 0:
+            elif char == " " and new_code.endswith(" "):
+                next = ""
+            elif char == "," and level == 0:
                 next = " |"
             new_code += next
         self.proposed_fix = Fix(

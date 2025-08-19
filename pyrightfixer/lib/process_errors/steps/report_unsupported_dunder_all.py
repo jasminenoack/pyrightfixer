@@ -11,12 +11,8 @@ class StepDunderAll(StepBase):
     @classmethod
     def choose_fix(cls, error: Diagnostic) -> None: 
         code_snippet= cls.get_actual_code_snipet(error)
-        print(code_snippet.exact_target)
         target = code_snippet.exact_target
         object_name = target[1:-1]
-        print(object_name)
-        print(object_name.upper() == object_name)
-        print("wat", object_name[0].upper(), object_name[0])
         if object_name.upper() == object_name:
             return cls(
                     error=error,
@@ -36,7 +32,7 @@ class ClassDunderAll(StepDunderAll):
         target = self.code_snippet.exact_target
         object_name = target[1:-1]
 
-        choosen_solution = "..."
+        choosen_solution = None
 
         lines = grep(f'{object_name}')
 
@@ -58,13 +54,10 @@ class ClassDunderAll(StepDunderAll):
             path = from_site_packages[0].split("site-packages")[1]
             parts = path.split("/")
             usable_parts = parts[1:-1]
-            choosen_solution = f"from {'.'.join(usable_parts)} import {object_name}"
+            choosen_solution = f"from {'.'.join(usable_parts)} import {object_name}\n"
             self.code_snippet.move_to_imports()
 
 
-        # print("hello", grep(f'class {object_name}'))
-        # for line in grep(f'class {object_name}'):
-        #     print(line)
 
         if choosen_solution:
             self.proposed_fix = Fix(

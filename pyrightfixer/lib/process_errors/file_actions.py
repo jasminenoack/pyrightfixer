@@ -1,6 +1,10 @@
+from collections import defaultdict
 from dataclasses import dataclass
+
+import typer
 from pyrightfixer.lib.pyright import Location, Range
 
+dirty_files = set()
 
 @dataclass 
 class Target:
@@ -74,6 +78,32 @@ class Target:
             end=Location(line=end_line, character=len(lines[end_line])),
         )
 
+    def find_typing_import(self) -> None:
+        with open(self.file_name, "r") as f:
+            lines = f.readlines()
+
+        for i, line in enumerate(lines):
+            if line.startswith("from typing"):
+                self.location = Range(
+                    start=Location(line=i, character=0),
+                    end=Location(line=i, character=len(line)),
+                )
+                self.expand_to_full_import()
+                return
+            
+        first_non_docstring_line = 0
+        if lines[0].startswith('"""'):
+            first_non_docstring_line = 1
+            while not '"""' in lines[first_non_docstring_line]:
+                first_non_docstring_line += 1
+        
+        self.location = Range(
+            start=Location(line=first_non_docstring_line + 1, character=0),
+            end=Location(line=first_non_docstring_line + 1, character=0),
+        )
+        self.exact_target = ""
+        self.expanded_target = ""
+
 @dataclass
 class Fix: 
     file: str 
@@ -111,11 +141,18 @@ def get_from_file(file_path: str, current_range: Range) -> Target:
 
 
 def replace_in_file(fix: Fix) -> None:
+    global dirty_files
     file_path = fix.file
+    if file_path in dirty_files:
+        typer.echo(f"File {file_path} already modified, skipping.")
+        return
     current_range = fix.range
     new_text = fix.new_code
     with open(file_path, "r") as f:
         lines = f.readlines()
+
+    line_count = len(lines)
+
     new_lines = []
     for i, line in enumerate(lines):
         if i < current_range.start.line or i > current_range.end.line:
@@ -131,5 +168,15 @@ def replace_in_file(fix: Fix) -> None:
         else:
             new_lines.append("")
 
+    new_lines = "".join(new_lines).splitlines(keepends=True)
+
+    new_line_count = len(new_lines)
+    if new_line_count != line_count:
+        dirty_files.add(file_path)
+
     with open(file_path, "w") as f:
         f.writelines(new_lines)
+
+
+def check_if_file_is_dirty(file_path: str) -> bool:
+    return file_path in dirty_files

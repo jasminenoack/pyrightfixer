@@ -14,6 +14,7 @@ class StepBase(ABC):
         self.code_snippet = code_snippet
         self.proposed_fix: Fix | None = None
         self.auto_fix: bool = False
+        self.already_fixed: bool = False
 
     @classmethod 
     def choose_fix(cls: type[Self], error: Diagnostic) -> Self:
@@ -32,6 +33,8 @@ class StepBase(ABC):
 
     def process_theory(self) -> None:
         self.develop_theory()
+        if self.already_fixed:
+            return
 
         original_code = self.code_snippet.expanded_target
         typer.echo(f"Current code ({"/".join(self.code_snippet.file_name.split("/")[-3:])}):")

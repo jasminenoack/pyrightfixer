@@ -117,5 +117,34 @@ def autofix(
     typer.echo(f"Fixed {fixed} errors.")
 
 
+@app.command()
+def cycle(
+    path: str = typer.Argument(".", help="Path to fix issues step by step"),
+    errors: str = typer.Option(
+        ",".join(Processor.step_mapping.keys()), "--errors", "-e", help="Comma-separated list of errors to fix"
+    ),
+):
+    typer.echo(f"Starting cycle for {path} with errors: {errors}...")
+    result = run_pyright(path)
+    original_total = result.summary.error_count
+    
+    autofix(
+        path=path,
+        errors=errors,
+    )
+
+    result = run_pyright(path)
+    new_total = result.summary.error_count
+    while new_total < original_total:
+        original_total = new_total
+        typer.echo(f"New total errors: {new_total}")
+        autofix(
+            path=path,
+            errors=errors,
+        )
+        result = run_pyright(path)
+        new_total = result.summary.error_count
+
+
 if __name__ == "__main__":
     app()

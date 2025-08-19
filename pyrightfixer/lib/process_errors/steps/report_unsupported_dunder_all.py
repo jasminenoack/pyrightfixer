@@ -36,6 +36,9 @@ class ClassDunderAll(StepDunderAll):
 
         lines = grep(f'{object_name}')
 
+        if len(lines) == 1:
+            choosen_solution = f"# {object_name}"
+
         lines_with_class_defs = [
             line 
             for line in lines 

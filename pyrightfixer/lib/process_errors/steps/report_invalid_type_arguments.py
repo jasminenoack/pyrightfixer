@@ -14,6 +14,11 @@ class StepInvalidTypeArguments(StepBase):
 
         "expected 2 but received 1"
 
+        if "expected" not in message or "received" not in message:
+            return cls(
+                error=error,
+                code_snippet=code_snippet
+            )
         groups = re.search(r"expected (\d+) but received (\d+)", message).groups()
         expected, recieved = int(groups[0]), int(groups[1])
 

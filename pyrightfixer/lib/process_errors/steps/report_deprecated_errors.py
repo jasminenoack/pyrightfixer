@@ -1,6 +1,6 @@
 
 from pyrightfixer.lib.process_errors.file_actions import Fix
-from pyrightfixer.lib.process_errors.step import StepBase
+from pyrightfixer.lib.process_errors.steps.step_base import StepBase
 from pyrightfixer.lib.pyright import Diagnostic
 
 

@@ -1,5 +1,5 @@
-from pyrightfixer.lib.process_errors.report_deprecated_errors import StepDeprecated
-from pyrightfixer.lib.process_errors.step import StepBase
+from pyrightfixer.lib.process_errors.steps.report_deprecated_errors import StepDeprecated
+from pyrightfixer.lib.process_errors.steps.step_base import StepBase
 from pyrightfixer.lib.pyright import Diagnostic
 
 

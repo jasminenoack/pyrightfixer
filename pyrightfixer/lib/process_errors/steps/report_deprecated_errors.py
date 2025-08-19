@@ -49,7 +49,7 @@ class StepDeprecated(StepBase):
 
 class StepOptional(StepDeprecated):
     def develop_theory(self) -> None:
-        self.code_snippet.expand_target(add_brackets=True)
+        self.code_snippet.add_brackets_to_target()
         current_code = self.code_snippet.expanded_target
         assert current_code.startswith("Optional[")
         assert current_code.endswith("]")
@@ -75,7 +75,7 @@ class StepDowncase(StepDeprecated):
 
 class StepUnion(StepDeprecated):
     def develop_theory(self) -> None:
-        self.code_snippet.expand_target(add_brackets=True)
+        self.code_snippet.add_brackets_to_target()
         current_code = self.code_snippet.expanded_target
         assert current_code.startswith("Union[")
         assert current_code.endswith("]")

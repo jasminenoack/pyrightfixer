@@ -1,4 +1,5 @@
 from pyrightfixer.lib.process_errors.steps.report_deprecated_errors import StepDeprecated
+from pyrightfixer.lib.process_errors.steps.report_unused import StepUnusedImport
 from pyrightfixer.lib.process_errors.steps.step_base import StepBase
 from pyrightfixer.lib.pyright import Diagnostic
 
@@ -10,6 +11,7 @@ class ProcessorState:
 class Processor:
     step_mapping: dict[str, StepBase] = {
         "reportDeprecated": StepDeprecated,
+        "reportUnusedImport": StepUnusedImport,
     }
 
     def __init__(self, errors: list[Diagnostic]) -> None:

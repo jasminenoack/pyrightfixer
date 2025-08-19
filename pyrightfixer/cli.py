@@ -39,7 +39,7 @@ def scan(
 def stepfix(
     path: str = typer.Argument(".", help="Path to fix issues step by step"),
     errors: str = typer.Option(
-        "reportDeprecated", "--errors", "-e", help="Comma-separated list of errors to fix"
+        "reportDeprecated,reportUnusedImport", "--errors", "-e", help="Comma-separated list of errors to fix"
     ),
 ):
     """Fix issues step by step in the provided path"""

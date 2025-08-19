@@ -32,6 +32,11 @@ class StepReportUndefined(StepBase):
                     error=error,
                     code_snippet=code_snippet
                 )
+            case "Callable":
+                return AddToTyping(
+                    error=error,
+                    code_snippet=code_snippet
+                )
             case _: 
                 return cls(
                     error=error,
@@ -49,7 +54,7 @@ class AddToTyping(StepReportUndefined):
         if expanded_target == "":
             expanded_target = f"from typing import {target}\n"
         elif "(" in expanded_target:
-            expanded_target = expanded_target.replace(f"(", "(\n {target},")
+            expanded_target = expanded_target.replace(f"(", f"(\n {target},")
         else:
             expanded_target = expanded_target.strip() + f", {target}\n"
         self.proposed_fix = Fix(

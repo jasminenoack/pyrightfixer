@@ -1,6 +1,7 @@
 import typer
 from pyrightfixer.lib.process_errors.file_actions import check_if_file_is_dirty
 from pyrightfixer.lib.process_errors.steps.report_implicit_string_concatenation import ImplicitStringConcatenation
+from pyrightfixer.lib.process_errors.steps.report_incompatible_method_override import IncompatibleMethodOverrideStep
 from pyrightfixer.lib.process_errors.steps.report_invalid_type_arguments import StepInvalidTypeArguments
 from pyrightfixer.lib.process_errors.steps.report_deprecated_errors import StepDeprecated
 from pyrightfixer.lib.process_errors.steps.report_missing_type_argument import StepMissingType
@@ -23,7 +24,8 @@ class Processor:
         "reportInvalidTypeArguments": StepInvalidTypeArguments,
         "reportUndefinedVariable": StepReportUndefined,
         "reportImplicitStringConcatenation": ImplicitStringConcatenation,
-        "reportUnsupportedDunderAll": StepDunderAll
+        "reportUnsupportedDunderAll": StepDunderAll,
+        "reportIncompatibleMethodOverride": IncompatibleMethodOverrideStep,
     }
 
     def __init__(self, errors: list[Diagnostic]) -> None:

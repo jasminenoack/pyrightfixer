@@ -119,6 +119,12 @@ class Target:
             end=Location(line=first_non_docstring_line + 1, character=0),
         )
 
+    def move_to_top(self) -> "Target":
+        self.location = Range(
+            start=Location(line=0, character=0),
+            end=Location(line=0, character=0),
+        )
+
 @dataclass
 class Fix: 
     file: str 

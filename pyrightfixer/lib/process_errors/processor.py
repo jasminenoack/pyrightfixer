@@ -24,6 +24,7 @@ class Processor:
         "reportUnusedImport": StepUnusedImport,
         "reportMissingTypeArgument": StepMissingType,
         "reportInvalidTypeArguments": StepInvalidTypeArguments,
+        "reportInvalidTypeForm": StepInvalidTypeArguments,
         "reportUndefinedVariable": StepReportUndefined,
         "reportImplicitStringConcatenation": ImplicitStringConcatenation,
         "reportUnsupportedDunderAll": StepDunderAll,

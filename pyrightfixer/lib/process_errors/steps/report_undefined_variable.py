@@ -37,6 +37,21 @@ class StepReportUndefined(StepBase):
                     error=error,
                     code_snippet=code_snippet
                 )
+            case "AbstractSet":
+                return AddToTyping(
+                    error=error,
+                    code_snippet=code_snippet
+                )
+            case "Iterable":
+                return AddToTyping(
+                    error=error,
+                    code_snippet=code_snippet
+                )
+            case "TYPE_CHECKING":
+                return AddToTyping(
+                    error=error,
+                    code_snippet=code_snippet
+                )
             case _: 
                 return cls(
                     error=error,

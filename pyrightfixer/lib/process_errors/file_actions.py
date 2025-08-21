@@ -125,6 +125,28 @@ class Target:
             end=Location(line=0, character=0),
         )
 
+    def expand_to_full_function(self) -> "Target":
+        with open(self.file_name, "r") as f:
+            lines = f.readlines()
+        start_line = self.location.start.line
+        end_line = self.location.end.line
+
+        while start_line > 0 and not lines[start_line].lstrip().startswith("def "):
+            start_line -= 1
+
+        start_indent = len(lines[start_line]) - len(lines[start_line].lstrip())
+        end_line = start_line + 1
+
+        while end_line < len(lines) and lines[end_line].strip() and (len(lines[end_line]) - len(lines[end_line].lstrip())) > start_indent:
+            end_line += 1
+
+        new_code = "".join(lines[start_line:end_line])
+        self.expanded_target = new_code
+        self.location = Range(
+            start=Location(line=start_line, character=0),
+            end=Location(line=end_line, character=len(lines[end_line]) if end_line < len(lines) else 0),
+        )
+
 @dataclass
 class Fix: 
     file: str 

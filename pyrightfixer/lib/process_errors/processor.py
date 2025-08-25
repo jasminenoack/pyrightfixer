@@ -1,5 +1,6 @@
 import typer
 from pyrightfixer.lib.process_errors.file_actions import check_if_file_is_dirty
+from pyrightfixer.lib.process_errors.steps.report_general_type_issues import GeneralTypeIssues
 from pyrightfixer.lib.process_errors.steps.report_implicit_string_concatenation import ImplicitStringConcatenation
 from pyrightfixer.lib.process_errors.steps.report_incompatible_method_override import IncompatibleMethodOverrideStep
 from pyrightfixer.lib.process_errors.steps.report_incompatible_variable_override import IncompatibleVariableOverrideStep
@@ -7,7 +8,9 @@ from pyrightfixer.lib.process_errors.steps.report_incomplete_stub import Incompl
 from pyrightfixer.lib.process_errors.steps.report_invalid_type_arguments import StepInvalidTypeArguments
 from pyrightfixer.lib.process_errors.steps.report_deprecated_errors import StepDeprecated
 from pyrightfixer.lib.process_errors.steps.report_missing_type_argument import StepMissingType
+from pyrightfixer.lib.process_errors.steps.report_self_cls_paramenter_name import ReportSelfParameterName
 from pyrightfixer.lib.process_errors.steps.report_undefined_variable import StepReportUndefined
+from pyrightfixer.lib.process_errors.steps.report_unknown_parameter_type import ReportUnknownParameter
 from pyrightfixer.lib.process_errors.steps.report_unsupported_dunder_all import StepDunderAll
 from pyrightfixer.lib.process_errors.steps.report_unused import StepUnusedImport
 from pyrightfixer.lib.process_errors.steps.step_base import StepBase
@@ -31,6 +34,10 @@ class Processor:
         "reportIncompatibleMethodOverride": IncompatibleMethodOverrideStep,
         "reportIncompatibleVariableOverride": IncompatibleVariableOverrideStep,
         "reportIncompleteStub": IncompleteStub,
+        "reportUnknownParameterType": ReportUnknownParameter,
+        "reportMissingParameterType": ReportUnknownParameter,
+        "reportSelfClsParameterName": ReportSelfParameterName,
+        "reportGeneralTypeIssues": GeneralTypeIssues,
     }
 
     def __init__(self, errors: list[Diagnostic]) -> None:

@@ -1,5 +1,4 @@
 
-import re
 from pyrightfixer.lib.process_errors.file_actions import Fix
 from pyrightfixer.lib.process_errors.steps.step_base import StepBase
 

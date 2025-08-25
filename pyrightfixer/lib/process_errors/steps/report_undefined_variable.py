@@ -57,6 +57,21 @@ class StepReportUndefined(StepBase):
                     error=error,
                     code_snippet=code_snippet
                 )
+            case "overload":
+                return AddToTyping(
+                    error=error,
+                    code_snippet=code_snippet
+                )
+            case "Protocol":
+                return AddToTyping(
+                    error=error,
+                    code_snippet=code_snippet
+                )
+            case "Literal":
+                return AddToTyping(
+                    error=error,
+                    code_snippet=code_snippet
+                )
             case _: 
                 return cls(
                     error=error,

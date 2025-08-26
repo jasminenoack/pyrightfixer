@@ -8,8 +8,6 @@ class ReportUnknownParameter(StepBase):
     def develop_theory(self, log: bool=True):
         self.code_snippet.expand_to_full_function()
 
-        print(self.code_snippet.exact_target)
-
         fix = None
 
         arguments_start = self.code_snippet.expanded_target.index("(") + 1

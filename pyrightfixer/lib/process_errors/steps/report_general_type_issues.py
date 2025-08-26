@@ -5,7 +5,6 @@ from pyrightfixer.lib.process_errors.steps.step_base import StepBase
 
 class GeneralTypeIssues(StepBase):
     def develop_theory(self, log: bool=True):
-        print(self.code_snippet.exact_target)
         message = self.error.message
         if "overrides a field of the same name but is missing" in message:
             self.code_snippet.move_to_top()
